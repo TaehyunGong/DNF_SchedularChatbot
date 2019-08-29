@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+						"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.thkong.dnfchatbot.chatbot.dao.ChatbotDao">
+
+	<!-- select id는 꼭 Dao의 메소드명과 같아야한다!. -->
+	<select id="getGrade" resultType="com.thkong.dnfchatbot.chatbot.vo.ItemGrade" >
+		SELECT yyyymmdd, itemId, itemGradeValue, itemGradeName FROM ItemGrade ORDER BY yyyymmdd DESC LIMIT 1
+	</select>
+	
+</mapper>

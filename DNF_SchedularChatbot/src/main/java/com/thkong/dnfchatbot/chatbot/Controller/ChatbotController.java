@@ -9,7 +9,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.thkong.dnfchatbot.chatbot.service.ChatbotService;
-import com.thkong.dnfchatbot.chatbot.vo.KakaoRes;
 import com.thkong.dnfchatbot.chatbot.vo.kakaoReq.Action;
 import com.thkong.dnfchatbot.chatbot.vo.kakaoReq.DetailParam;
 import com.thkong.dnfchatbot.chatbot.vo.kakaoReq.KakaoReq;
@@ -20,8 +19,8 @@ public class ChatbotController {
 	@Autowired
 	ChatbotService service;
 	
-	@RequestMapping(value="/test")
-	public KakaoRes test(@RequestBody String req) {
+	@RequestMapping(value="/test", produces = "application/json; charset=UTF-8")
+	public String test(@RequestBody String req) {
 		
 		ObjectMapper mapper = new ObjectMapper();
 		KakaoReq ob = null;
@@ -37,7 +36,7 @@ public class ChatbotController {
 		
 		//----------------------------------------------------------
 		
-		KakaoRes res = new ResponseTemplate().addSimpleText("추가").build();
+		String res = new ResponseTemplate().addSimpleText("추가").build();
 		
 		return res;
 	}

@@ -3,16 +3,20 @@ package com.thkong.dnfchatbot.chatbot.Controller;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
+
+import com.thkong.dnfchatbot.chatbot.vo.Items;
 import com.thkong.dnfchatbot.chatbot.vo.KakaoRes;
 import com.thkong.dnfchatbot.chatbot.vo.SimpleText;
 import com.thkong.dnfchatbot.chatbot.vo.Template;
 
 public class ResponseTemplate {
 
-	List outputs;
+	JSONArray outputs;
 	
 	public ResponseTemplate() {
-		this.outputs = new ArrayList();
+		this.outputs = new JSONArray();
 	}
 
 	/**
@@ -22,9 +26,12 @@ public class ResponseTemplate {
 	 */
 	public ResponseTemplate addSimpleText(String text) {
 		
-		SimpleText simpleText = new SimpleText();
-		simpleText.setText(text);
-		this.outputs.add(simpleText);
+		JSONObject json = new JSONObject();
+		JSONObject value = new JSONObject();
+		value.put("text", text);
+		
+		json.put("simpleText", value);
+		outputs.add(json);
 		
 		return this;
 	}
@@ -35,18 +42,23 @@ public class ResponseTemplate {
 	 */
 	public ResponseTemplate addListItem() {
 		
+		List<Items> items = new ArrayList<Items>();
+		// ........
+		
+		
 		return this;
 	}
 	
-	public KakaoRes build() {
+	public String build() {
 		
-		Template temp = new Template();
-		temp.setOutputs(outputs);
+		JSONObject res = new JSONObject();
+		res.put("version", "2.0");
 		
-		KakaoRes res = new KakaoRes();
-		res.setVersion("2.0");
-		res.setTemplate(temp);
+		JSONObject template = new JSONObject();
+		template.put("outputs", outputs);
 		
-		return res;
+		res.put("template", template);
+		
+		return res.toJSONString();
 	}
 }

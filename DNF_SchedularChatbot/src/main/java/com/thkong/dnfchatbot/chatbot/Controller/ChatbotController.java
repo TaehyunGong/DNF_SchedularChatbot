@@ -12,9 +12,11 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.thkong.dnfchatbot.chatbot.service.ChatbotService;
 import com.thkong.dnfchatbot.chatbot.vo.Items;
+import com.thkong.dnfchatbot.chatbot.vo.TodayRating;
 import com.thkong.dnfchatbot.chatbot.vo.kakaoReq.Action;
 import com.thkong.dnfchatbot.chatbot.vo.kakaoReq.DetailParam;
 import com.thkong.dnfchatbot.chatbot.vo.kakaoReq.KakaoReq;
+import com.thkong.dnfchatbot.common.httpConnection;
 
 @RestController
 @RequestMapping(value="/chat", produces = "application/json; charset=UTF-8")
@@ -24,7 +26,28 @@ public class ChatbotController {
 	ChatbotService service;
 	
 	@RequestMapping(value="/rating")
-	public String toDayRating(@RequestBody String req) {
+	public String toDayRating() {
+		
+		httpConnection conn = httpConnection.getInstance();
+		ObjectMapper objmap = new ObjectMapper();
+		
+		String apiurl = "https://api.neople.co.kr/df/items/ff3bdb021bcf73864005e78316dd961c/shop?apikey=secretkey";
+		String responseMsg;
+		TodayRating eq = null;
+		try {
+			responseMsg = conn.HttpGetConnection(apiurl).toString();
+			eq = objmap.readValue(responseMsg, TodayRating.class);
+			
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+				
+		return new ResponseTemplate().addSimpleText(eq.getItemGradeName()).build();
+	}
+	
+	@RequestMapping(value="/equipment")
+	public String equipment(@RequestBody String req) {
 		
 		ObjectMapper mapper = new ObjectMapper();
 		KakaoReq ob = null;
@@ -56,26 +79,6 @@ public class ChatbotController {
 						.build();
 		
 		return res;
-	}
-	
-	@RequestMapping(value="/equipment")
-	public String equipment(@RequestBody String req) {
-		
-		ObjectMapper mapper = new ObjectMapper();
-		KakaoReq ob = null;
-		try {
-			ob = mapper.readValue(req, KakaoReq.class);
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-		Action action = ob.getAction();
-		DetailParam param = action.getDetailParams().get("armor");
-		
-		String setName = param.getValue();
-		
-		
-		
-		return null;
 	}
 	
 }

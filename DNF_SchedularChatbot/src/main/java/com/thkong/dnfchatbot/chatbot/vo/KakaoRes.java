@@ -1,9 +1,9 @@
 package com.thkong.dnfchatbot.chatbot.vo;
 
-public class KakaoRes<T> {
+public class KakaoRes {
 
 	public String version;
-	public Template<T> template;
+	public Template template;
 	
 	public KakaoRes() {
 		super();
@@ -15,10 +15,10 @@ public class KakaoRes<T> {
 	public void setVersion(String version) {
 		this.version = version;
 	}
-	public Template<T> getTemplate() {
+	public Template getTemplate() {
 		return template;
 	}
-	public void setTemplate(Template<T> template) {
+	public void setTemplate(Template template) {
 		this.template = template;
 	}
 	

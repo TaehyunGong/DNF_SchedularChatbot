@@ -2,20 +2,20 @@ package com.thkong.dnfchatbot.chatbot.vo;
 
 import java.util.List;
 
-public class Template<T> {
+public class Template {
 
-	public List<T> outputs;
+	public List outputs;
 
 	public Template() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
 
-	public List<T> getOutputs() {
+	public List getOutputs() {
 		return outputs;
 	}
 
-	public void setOutputs(List<T> outputs) {
+	public void setOutputs(List outputs) {
 		this.outputs = outputs;
 	}
 	

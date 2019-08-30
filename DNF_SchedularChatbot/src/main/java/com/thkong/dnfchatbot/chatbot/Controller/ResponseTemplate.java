@@ -40,23 +40,24 @@ public class ResponseTemplate {
 	 * @return
 	 * https://i.kakao.com/docs/skill-response-format#listitem-%EC%83%81%EC%84%B8-%ED%95%84%EB%93%9C
 	 */
-	public ResponseTemplate addListItem() {
+	public ResponseTemplate addListItem(String title, String imageUrl, List<Items> itemList) {
 		
 		JSONObject header = new JSONObject();
 		JSONObject item = new JSONObject();
-		item.put("title", "헤더 제목");
-		item.put("imageUrl", "헤더 이미지 ");
+		item.put("title", title);
+		item.put("imageUrl", imageUrl);
+		
 		header.put("header", item);
 		
 		//////////////////
 		
 		JSONArray items = new JSONArray();
 		JSONObject temp = new JSONObject();
-		for(int i=0; i<3; i++) {
+		for(Items content : itemList) {
 			temp = new JSONObject();
-			temp.put("title", i+"번째 제목");
-			temp.put("description", "본문");
-			temp.put("imageUrl", "이미지");
+			temp.put("title", content.getTitle());
+			temp.put("description", content.getDescription());
+			temp.put("imageUrl", content.getImageUrl());
 			
 			items.add(temp);
 		}

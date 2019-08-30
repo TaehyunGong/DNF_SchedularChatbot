@@ -1,6 +1,8 @@
 package com.thkong.dnfchatbot.chatbot.Controller;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.codehaus.jackson.map.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.thkong.dnfchatbot.chatbot.service.ChatbotService;
+import com.thkong.dnfchatbot.chatbot.vo.Items;
 import com.thkong.dnfchatbot.chatbot.vo.kakaoReq.Action;
 import com.thkong.dnfchatbot.chatbot.vo.kakaoReq.DetailParam;
 import com.thkong.dnfchatbot.chatbot.vo.kakaoReq.KakaoReq;
@@ -36,7 +39,20 @@ public class ChatbotController {
 		
 		//----------------------------------------------------------
 		
-		String res = new ResponseTemplate().addListItem().addSimpleText("테스트입니다.").build();
+		List<Items> items = new ArrayList<Items>();
+		
+		for(int i=0; i<3; i++) {
+			Items item = new Items();
+			item.setTitle(i+"");
+			item.setDescription("설명");
+			item.setImageUrl("이미지");
+			items.add(item);
+		}
+		
+		String res = new ResponseTemplate()
+						.addListItem("제목","제목이미지", items)
+						.addSimpleText("테스트입니다.")
+						.build();
 		
 		return res;
 	}

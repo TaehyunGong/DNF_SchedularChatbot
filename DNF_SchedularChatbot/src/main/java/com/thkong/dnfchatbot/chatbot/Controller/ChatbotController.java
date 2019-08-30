@@ -17,13 +17,14 @@ import com.thkong.dnfchatbot.chatbot.vo.kakaoReq.DetailParam;
 import com.thkong.dnfchatbot.chatbot.vo.kakaoReq.KakaoReq;
 
 @RestController
+@RequestMapping(value="/chat", produces = "application/json; charset=UTF-8")
 public class ChatbotController {
 
 	@Autowired
 	ChatbotService service;
 	
-	@RequestMapping(value="/test", produces = "application/json; charset=UTF-8")
-	public String test(@RequestBody String req) {
+	@RequestMapping(value="/rating")
+	public String toDayRating(@RequestBody String req) {
 		
 		ObjectMapper mapper = new ObjectMapper();
 		KakaoReq ob = null;
@@ -55,6 +56,26 @@ public class ChatbotController {
 						.build();
 		
 		return res;
+	}
+	
+	@RequestMapping(value="/equipment")
+	public String equipment(@RequestBody String req) {
+		
+		ObjectMapper mapper = new ObjectMapper();
+		KakaoReq ob = null;
+		try {
+			ob = mapper.readValue(req, KakaoReq.class);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		Action action = ob.getAction();
+		DetailParam param = action.getDetailParams().get("armor");
+		
+		String setName = param.getValue();
+		
+		
+		
+		return null;
 	}
 	
 }

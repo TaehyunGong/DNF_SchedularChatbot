@@ -42,9 +42,30 @@ public class ResponseTemplate {
 	 */
 	public ResponseTemplate addListItem() {
 		
-		List<Items> items = new ArrayList<Items>();
-		// ........
+		JSONObject header = new JSONObject();
+		JSONObject item = new JSONObject();
+		item.put("title", "헤더 제목");
+		item.put("imageUrl", "헤더 이미지 ");
+		header.put("header", item);
 		
+		//////////////////
+		
+		JSONArray items = new JSONArray();
+		JSONObject temp = new JSONObject();
+		for(int i=0; i<3; i++) {
+			temp = new JSONObject();
+			temp.put("title", i+"번째 제목");
+			temp.put("description", "본문");
+			temp.put("imageUrl", "이미지");
+			
+			items.add(temp);
+		}
+		
+		JSONObject output = new JSONObject();
+		output.put("listCard", header);
+		output.put("items", items);
+		
+		outputs.add(output);
 		
 		return this;
 	}

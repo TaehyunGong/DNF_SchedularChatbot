@@ -36,7 +36,7 @@ public class ChatbotController {
 		
 		//----------------------------------------------------------
 		
-		String res = new ResponseTemplate().addSimpleText("추가").build();
+		String res = new ResponseTemplate().addListItem().addSimpleText("테스트입니다.").build();
 		
 		return res;
 	}

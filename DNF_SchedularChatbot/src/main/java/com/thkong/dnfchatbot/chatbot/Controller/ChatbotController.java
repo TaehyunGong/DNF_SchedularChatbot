@@ -42,8 +42,7 @@ public class ChatbotController {
 		String res = null;
 		
 		try {
-			String message = null;
-			service.toDayEquipment(req);
+			res = service.toDayEquipment(req);
 		} catch (Exception e) {
 			res = service.errorMessage();
 			e.printStackTrace();

@@ -80,12 +80,11 @@ public class ChatbotServiceImpl implements ChatbotService {
 		List<Items> items = new ArrayList<Items>();
 		
 		for(Equipment equip : equipList) {
-			items.add(getItems(equip.getItemId()));
+			items.add(getItems(equip));
 		}
 		
 		String res = new ResponseTemplate()
 						.addListItem(title,titleImageUrl, items)
-						.addSimpleText("테스트입니다.")
 						.build();
 		
 		return res;
@@ -96,17 +95,17 @@ public class ChatbotServiceImpl implements ChatbotService {
 	 * @date 2019. 9. 2.
 	 * @description 아이템 Id를 받아 오늘날의 등급정보를 가져온다.
 	 */
-	public Items getItems(String itemId) throws IOException {
+	public Items getItems(Equipment equip) throws IOException {
 		Items item = new Items();
 		
 		ObjectMapper objmap = new ObjectMapper();
 		httpConnection conn = httpConnection.getInstance();
-		String responseMsg = conn.HttpGetConnection("https://api.neople.co.kr/df/items/" + itemId + "/shop?apikey=7gW7GbmqkpcFLERS0FT8S9RIK5O1257V").toString();
+		String responseMsg = conn.HttpGetConnection("https://api.neople.co.kr/df/items/" + equip.getItemId() + "/shop?apikey=7gW7GbmqkpcFLERS0FT8S9RIK5O1257V").toString();
 		Equipment eq = objmap.readValue(responseMsg, Equipment.class);
 		
-		item.setTitle(eq.getItemName());
-		item.setImageUrl("https://img-api.neople.co.kr/df/items/"+itemId);
-		item.setDescription(eq.getItemExplain());
+		item.setTitle(equip.getItemName());
+		item.setImageUrl("https://img-api.neople.co.kr/df/items/"+equip.getItemId());
+		item.setDescription(equip.getItemExplain());
 		
 		return item;
 	}

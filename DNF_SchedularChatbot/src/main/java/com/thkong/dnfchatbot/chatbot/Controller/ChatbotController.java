@@ -25,25 +25,13 @@ public class ChatbotController {
 	@Autowired
 	ChatbotService service;
 	
+	/**
+	 * @date 2019. 9. 2.
+	 * @description rest통신으로 바로 오늘날 등급을 가져온다. ('미래를 보는 지혜'를 기준으로 가져온다.)
+	 */
 	@RequestMapping(value="/rating")
 	public String toDayRating() {
-		
-		httpConnection conn = httpConnection.getInstance();
-		ObjectMapper objmap = new ObjectMapper();
-		
-		String apiurl = "https://api.neople.co.kr/df/items/ff3bdb021bcf73864005e78316dd961c/shop?apikey=secretkey";
-		String responseMsg;
-		TodayRating eq = null;
-		try {
-			responseMsg = conn.HttpGetConnection(apiurl).toString();
-			eq = objmap.readValue(responseMsg, TodayRating.class);
-			
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-				
-		return new ResponseTemplate().addSimpleText(eq.getItemGradeName()).build();
+		return service.toDayRating();
 	}
 	
 	@RequestMapping(value="/equipment")

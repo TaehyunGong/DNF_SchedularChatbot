@@ -13,6 +13,7 @@ import com.thkong.dnfchatbot.chatbot.Controller.ResponseTemplate;
 import com.thkong.dnfchatbot.chatbot.dao.ChatbotDao;
 import com.thkong.dnfchatbot.chatbot.vo.Items;
 import com.thkong.dnfchatbot.chatbot.vo.TodayRating;
+import com.thkong.dnfchatbot.chatbot.vo.Equipment.Equipment;
 import com.thkong.dnfchatbot.chatbot.vo.kakaoReq.Action;
 import com.thkong.dnfchatbot.chatbot.vo.kakaoReq.DetailParam;
 import com.thkong.dnfchatbot.common.httpConnection;
@@ -45,7 +46,7 @@ public class ChatbotServiceImpl implements ChatbotService {
 		httpConnection conn = httpConnection.getInstance();
 		ObjectMapper objmap = new ObjectMapper();
 		
-		String apiurl = "https://api.neople.co.kr/df/items/ff3bdb021bcf73864005e78316dd961c/shop?apikey=P4GiGs1KtJyD3VoMB3jkgzDsMI4tDNGi9";
+		String apiurl = "https://api.neople.co.kr/df/items/ff3bdb021bcf73864005e78316dd961c/shop?apikey=7gW7GbmqkpcFLERS0FT8S9RIK5O1257V";
 		String responseMsg = conn.HttpGetConnection(apiurl).toString();
 		TodayRating eq = objmap.readValue(responseMsg, TodayRating.class);
 		
@@ -64,30 +65,50 @@ public class ChatbotServiceImpl implements ChatbotService {
 	@Override
 	public String toDayEquipment(String req) throws Exception{
 		
+		//Kakao에서 받은 request json을 Action 객체로 파싱 후 setName를 가져온다. 
 		RequestMappings reqMap = RequestMappings.getInstance();
 		Action action = reqMap.getAction(req);
-		
 		DetailParam param = action.getDetailParams().get("equipment");
 		String setName = param.getValue();
 		
+		List<Equipment> equipList = dao.getSetEquipment(setName);
+		
+		String title = equipList.get(0).getSetItemName();
+		String titleImageUrl = equipList.get(0).getSetItemId();
+		
+		//ItemList 메세지 형식을 반환시키기 위해 Item객체를 리스트로 만들어 넘겨준다.
 		List<Items> items = new ArrayList<Items>();
 		
-		for(int i=0; i<3; i++) {
-			Items item = new Items();
-			item.setTitle(i+"");
-			item.setDescription("설명");
-			item.setImageUrl("이미지");
-			items.add(item);
+		for(Equipment equip : equipList) {
+			items.add(getItems(equip.getItemId()));
 		}
 		
 		String res = new ResponseTemplate()
-						.addListItem("제목","제목이미지", items)
+						.addListItem(title,titleImageUrl, items)
 						.addSimpleText("테스트입니다.")
 						.build();
 		
-		return null;
+		return res;
 	}
 
-	
+	/**
+	 * @throws IOException 
+	 * @date 2019. 9. 2.
+	 * @description 아이템 Id를 받아 오늘날의 등급정보를 가져온다.
+	 */
+	public Items getItems(String itemId) throws IOException {
+		Items item = new Items();
+		
+		ObjectMapper objmap = new ObjectMapper();
+		httpConnection conn = httpConnection.getInstance();
+		String responseMsg = conn.HttpGetConnection("https://api.neople.co.kr/df/items/" + itemId + "/shop?apikey=7gW7GbmqkpcFLERS0FT8S9RIK5O1257V").toString();
+		Equipment eq = objmap.readValue(responseMsg, Equipment.class);
+		
+		item.setTitle(eq.getItemName());
+		item.setImageUrl("https://img-api.neople.co.kr/df/items/"+itemId);
+		item.setDescription(eq.getItemExplain());
+		
+		return item;
+	}
 	
 }

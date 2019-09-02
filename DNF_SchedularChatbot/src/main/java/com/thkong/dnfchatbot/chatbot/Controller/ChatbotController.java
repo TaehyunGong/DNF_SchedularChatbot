@@ -1,22 +1,11 @@
 package com.thkong.dnfchatbot.chatbot.Controller;
 
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-
-import org.codehaus.jackson.map.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.thkong.dnfchatbot.chatbot.service.ChatbotService;
-import com.thkong.dnfchatbot.chatbot.vo.Items;
-import com.thkong.dnfchatbot.chatbot.vo.TodayRating;
-import com.thkong.dnfchatbot.chatbot.vo.kakaoReq.Action;
-import com.thkong.dnfchatbot.chatbot.vo.kakaoReq.DetailParam;
-import com.thkong.dnfchatbot.chatbot.vo.kakaoReq.KakaoReq;
-import com.thkong.dnfchatbot.common.httpConnection;
 
 @RestController
 @RequestMapping(value="/chat", produces = "application/json; charset=UTF-8")

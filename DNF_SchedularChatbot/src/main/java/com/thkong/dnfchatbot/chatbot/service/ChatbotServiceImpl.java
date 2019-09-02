@@ -40,6 +40,16 @@ public class ChatbotServiceImpl implements ChatbotService {
 		return res;
 	}
 	
+	/**
+	 * @date 2019. 9. 2.
+	 * @description 아이템 아이디를 가지고 rest통신 전용 메소드
+	 */
+	public String connItemStatus(String itemId) throws IOException {
+		httpConnection conn = httpConnection.getInstance();
+		String apiurl = "https://api.neople.co.kr/df/items/" + itemId + "/shop?apikey=7gW7GbmqkpcFLERS0FT8S9RIK5O1257V";
+		return conn.HttpGetConnection(apiurl).toString();
+	}
+	
 	/* 
 	 * @see com.thkong.dnfchatbot.chatbot.service.ChatbotService#toDayRating()
 	 * @date 2019. 9. 2.
@@ -47,15 +57,14 @@ public class ChatbotServiceImpl implements ChatbotService {
 	 */
 	@Override
 	public String toDayRating() throws IOException {
-		httpConnection conn = httpConnection.getInstance();
 		ObjectMapper objmap = new ObjectMapper();
 		
-		String apiurl = "https://api.neople.co.kr/df/items/ff3bdb021bcf73864005e78316dd961c/shop?apikey=7gW7GbmqkpcFLERS0FT8S9RIK5O1257V";
-		String responseMsg = conn.HttpGetConnection(apiurl).toString();
+		String responseMsg = connItemStatus("ff3bdb021bcf73864005e78316dd961c");
 		TodayRating eq = objmap.readValue(responseMsg, TodayRating.class);
+		String text = eq.getItemGradeName()+"("+eq.getItemGradeValue()+"%)";
 		
 		String res = new ResponseTemplate()
-						 .addSimpleText(eq.getItemGradeName())
+						 .addSimpleText(text)
 						 .build();
 		
 		return res;
@@ -73,11 +82,16 @@ public class ChatbotServiceImpl implements ChatbotService {
 		RequestMappings reqMap = RequestMappings.getInstance();
 		Action action = reqMap.getAction(req);
 		DetailParam param = action.getDetailParams().get("equipment");
+		DetailParam option = action.getDetailParams().get("option");
+		
 		String setName = param.getValue();
 		
 		List<ItemSetOption> equipList = dao.getSetEquipment(setName);
 		
-		String title = equipList.get(0).getSetItemName();
+		String responseMsg = connItemStatus("ff3bdb021bcf73864005e78316dd961c");
+		TodayRating eq = new ObjectMapper().readValue(responseMsg, TodayRating.class);
+		
+		String title = equipList.get(0).getSetItemName().replace("세트", "("+eq.getItemGradeValue()+"%)");
 		String titleImageUrl = null;
 		
 		//ItemList 메세지 형식을 반환시키기 위해 Item객체를 리스트로 만들어 넘겨준다.
@@ -111,8 +125,8 @@ public class ChatbotServiceImpl implements ChatbotService {
 		Items item = new Items();
 		
 		ObjectMapper objmap = new ObjectMapper();
-		httpConnection conn = httpConnection.getInstance();
-		String responseMsg = conn.HttpGetConnection("https://api.neople.co.kr/df/items/" + equip.getItemId() + "/shop?apikey=7gW7GbmqkpcFLERS0FT8S9RIK5O1257V").toString();
+		String responseMsg = connItemStatus(equip.getItemId());
+		
 		Equipment eq = objmap.readValue(responseMsg, Equipment.class);
 
 		String description = "";

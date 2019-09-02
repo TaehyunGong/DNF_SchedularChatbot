@@ -3,5 +3,13 @@
 						"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="com.thkong.dnfchatbot.chatbot.dao.ChatbotDao">
-
+	
+	<!-- select id는 꼭 Dao의 메소드명과 같아야한다!. -->
+	<select id="getSetEquipment" resultType="com.thkong.dnfchatbot.chatbot.vo.Equipment.Equipment" >
+		SELECT * 
+		FROM   Equipment
+		WHERE  setItemName = #{setName}
+		ORDER BY printOrder
+	</select>
+	
 </mapper>

@@ -100,17 +100,14 @@ public class ChatbotServiceImpl implements ChatbotService {
 	 * @description 아이템 Id를 받아 오늘날의 등급정보를 가져온다.
 	 */
 	public Items getItems(ItemSetOption equip) throws IOException {
-		System.out.println(equip);
 		List<Map<String, String>> mapList = new ArrayList<Map<String, String>>(); 
 		String[] arr = equip.getOption().split(",");
 		for(String option : arr) {
-			System.out.print(option + ", ");
 			String[] a = option.split("\\+");
 			Map<String, String> m = new HashMap<String ,String>();
 			m.put(a[0], a[1]);
 			mapList.add(m);
 		}
-		System.out.println(mapList);
 		Items item = new Items();
 		
 		ObjectMapper objmap = new ObjectMapper();
@@ -124,7 +121,7 @@ public class ChatbotServiceImpl implements ChatbotService {
 			for(ItemStatus status : eq.getItemStatus()) {
 				String value = map.get(status.getName());
 				if(value != null) {
-					description += status.getName()+" " + status.getValue() +"(+"+(Integer.parseInt(value) - Integer.parseInt(status.getValue()))+") ";
+					description += shortName(status.getName())+" " + status.getValue() +"(+"+(Integer.parseInt(value) - Integer.parseInt(status.getValue()))+") ";
 				}
 			}
 		}
@@ -136,4 +133,27 @@ public class ChatbotServiceImpl implements ChatbotService {
 		return item;
 	}
 	
+	/**
+	 * @date 2019. 9. 2.
+	 * @description 옵션명을 짧게하기 위해 별도로 메소드 생성
+	 */
+	public String shortName(String name) {
+		
+		switch(name) {
+			case "물리 공격력" : name="물공"; break;
+			case "마법 공격력" : name="마공"; break;
+			case "독립 공격력" : name="독공"; break;
+			case "모든 속성 강화" : name="모속"; break;
+			case "화속성강화" : name="화강"; break;
+			case "수속성강화" : name="수속"; break;
+			case "명속성강화" : name="명속"; break;
+			case "암속성강화" : name="암강"; break;
+			case "힘" : name="힘"; break;
+			case "지능" : name="지"; break;
+			case "체력" : name="체"; break;
+			case "정신력" : name="정"; break;
+		}
+		
+		return name;
+	}
 }

@@ -5,11 +5,17 @@
 <mapper namespace="com.thkong.dnfchatbot.chatbot.dao.ChatbotDao">
 	
 	<!-- select id는 꼭 Dao의 메소드명과 같아야한다!. -->
-	<select id="getSetEquipment" resultType="com.thkong.dnfchatbot.chatbot.vo.Equipment.Equipment" >
-		SELECT * 
-		FROM   Equipment
+	<select id="getSetEquipment" resultType="com.thkong.dnfchatbot.chatbot.vo.Equipment.ItemSetOption" >
+		SELECT T1.itemId, T1.itemName, T1.setItemName, group_concat(CONCAT_WS('+',T2.name,T2.value) ORDER BY T3.printOrder, '') Option
+		FROM   Equipment T1
+			   JOIN MaxItemStatus T2
+			   		ON T1.itemId = T2.itemId
+			   JOIN ItemOption T3
+			        ON T2.name = T3.optionName
+			        AND T3.useYN = 'Y'
 		WHERE  setItemName = #{setName}
-		ORDER BY printOrder
+		GROUP BY T1.itemId, T1.itemName
+		ORDER BY T1.printOrder
 	</select>
 	
 </mapper>

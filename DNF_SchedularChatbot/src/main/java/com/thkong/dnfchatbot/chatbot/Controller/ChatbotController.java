@@ -31,40 +31,34 @@ public class ChatbotController {
 	 */
 	@RequestMapping(value="/rating")
 	public String toDayRating() {
-		return service.toDayRating();
-	}
-	
-	@RequestMapping(value="/equipment")
-	public String equipment(@RequestBody String req) {
+		String res = null;
 		
-		ObjectMapper mapper = new ObjectMapper();
-		KakaoReq ob = null;
 		try {
-			ob = mapper.readValue(req, KakaoReq.class);
-		} catch (IOException e) {
+			res = service.toDayRating();
+		} catch (Exception e) {
+			// 어떠한 에러라도 발생시 에러 메세지 발송
+			res = service.errorMessage();
 			e.printStackTrace();
 		}
-		Action action = ob.getAction();
-		DetailParam param = action.getDetailParams().get("armor");
 		
-		String setName = param.getValue();
+		return res;
+	}
+	
+	/**
+	 * @date 2019. 9. 2.
+	 * @description 오늘날의 장비 등급을 가져온다.
+	 */
+	@RequestMapping(value="/equipment")
+	public String equipment(@RequestBody String req) {
+		String res = null;
 		
-		//----------------------------------------------------------
-		
-		List<Items> items = new ArrayList<Items>();
-		
-		for(int i=0; i<3; i++) {
-			Items item = new Items();
-			item.setTitle(i+"");
-			item.setDescription("설명");
-			item.setImageUrl("이미지");
-			items.add(item);
+		try {
+			String message = null;
+			service.toDayEquipment(req);
+		} catch (Exception e) {
+			res = service.errorMessage();
+			e.printStackTrace();
 		}
-		
-		String res = new ResponseTemplate()
-						.addListItem("제목","제목이미지", items)
-						.addSimpleText("테스트입니다.")
-						.build();
 		
 		return res;
 	}

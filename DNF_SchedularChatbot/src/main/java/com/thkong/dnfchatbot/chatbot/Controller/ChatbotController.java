@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.thkong.dnfchatbot.chatbot.service.ChatbotService;
 
 @RestController
-@RequestMapping(value="/chat", produces = "application/json; charset=UTF-8")
+@RequestMapping(value="/chat", produces = "application/json")
 public class ChatbotController {
 
 	@Autowired
@@ -47,7 +47,6 @@ public class ChatbotController {
 			res = service.errorMessage();
 			e.printStackTrace();
 		}
-		
 		return res;
 	}
 	

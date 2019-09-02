@@ -58,13 +58,14 @@ public class ResponseTemplate {
 			temp.put("title", content.getTitle());
 			temp.put("description", content.getDescription());
 			temp.put("imageUrl", content.getImageUrl());
+			temp.put("link", null);
 			
 			items.add(temp);
 		}
 		
 		JSONObject output = new JSONObject();
+		header.put("items", items);
 		output.put("listCard", header);
-		output.put("items", items);
 		
 		outputs.add(output);
 		
@@ -74,13 +75,16 @@ public class ResponseTemplate {
 	public String build() {
 		
 		JSONObject res = new JSONObject();
-		res.put("version", "2.0");
 		
 		JSONObject template = new JSONObject();
 		template.put("outputs", outputs);
 		
 		res.put("template", template);
 		
-		return res.toJSONString();
+		StringBuffer str = new StringBuffer(res.toJSONString());
+		str.insert(1, "\"version\": \"2.0\",");
+//		res.put("version", "2.0");
+		
+		return str.toString();
 	}
 }

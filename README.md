@@ -1,7 +1,7 @@
 # DNF_SchedularChatbot
 > 카카오 챗봇을 사용하여 유저들에게 오늘등급을 전달해주는 챗봇 서버
 
-![default-image](header.png)
+![chatbot image](https://user-images.githubusercontent.com/38848719/64661078-28622800-d47e-11e9-9c60-79514784f5b9.gif)
 
 ## Development Environment
 * Language : open JDK 1.8
@@ -33,9 +33,5 @@
 * 1.0.0
     * 기본 오늘의 등급 및 장비의 등급을 발송 할수 있도록 배포
 
-
 ## hotfix
 -
-
-<!-- Markdown link & img dfn's -->
-[default-image]: https://cafeptthumb-phinf.pstatic.net/MjAxOTA5MDJfMjA1/MDAxNTY3NDIzMTI1NjIw.Ya3hclY6S3EL-dlvSR37TgO8po-p_-IW0QT91x9F_eQg.CYAccwhJ_gsMmkDFQ9ZSg-lDIaLQ2KIPQrsLcr3dubgg.JPEG/Screenshot_20190902-200808_KakaoTalk.jpg?type=w740

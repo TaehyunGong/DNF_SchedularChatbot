@@ -1,6 +1,9 @@
 # DNF_SchedularChatbot
 > 카카오 챗봇을 사용하여 유저들에게 오늘등급을 전달해주는 챗봇 서버
 
+## PlusFriend URL
+- http://pf.kakao.com/_qFxdrT
+
 ![chatbot image](https://user-images.githubusercontent.com/38848719/64661078-28622800-d47e-11e9-9c60-79514784f5b9.gif)
 
 ## Development Environment

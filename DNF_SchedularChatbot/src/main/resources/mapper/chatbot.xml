@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+						"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.thkong.dnfchatbot.chatbot.dao.ChatbotDao">
+	
+	<!-- select id는 꼭 Dao의 메소드명과 같아야한다!. -->
+	<select id="getSetEquipment" resultType="com.thkong.dnfchatbot.chatbot.vo.Equipment.ItemSetOption" >
+		SELECT T1.itemId, T1.itemName, T1.setItemName
+		 , CASE WHEN T1.setItemName LIKE '%청화%' OR T1.setItemName LIKE '%시리네%' THEN
+		 		group_concat(CONCAT_WS('+',T2.name,T2.value) ORDER BY T3.PristPrintOrder IS NULL ASC, T3.PristPrintOrder ASC, '')
+		 	ELSE
+		 		group_concat(CONCAT_WS('+',T2.name,T2.value) ORDER BY T3.printOrder, '')
+		 	END  Option
+		FROM   Equipment T1
+			   JOIN MaxItemStatus T2
+			   		ON T1.itemId = T2.itemId
+			   JOIN ItemOption T3
+			        ON T2.name = T3.optionName
+			        AND T3.useYN = 'Y'
+		WHERE  setItemName = #{setName}
+		GROUP BY T1.itemId, T1.itemName
+		ORDER BY T1.printOrder
+	</select>
+	
+</mapper>

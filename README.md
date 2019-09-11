@@ -16,7 +16,7 @@
 * DB : MariaDB v10.4.7-bionic
 * DB Tool : DBeaver
 
-## Operation Envirment
+## Operation Environment
 * PaaS Platform : NCloud
 * Server Specification : [Compact] 1vCPU, 2GB Mem
 * Container System : docker

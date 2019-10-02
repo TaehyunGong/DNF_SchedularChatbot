@@ -25,7 +25,7 @@
 1. STS를 틀고 해당 프로젝트에 Run as
 2. Maven Build 에 다음과 같이 작성 Goals : package, profiles : pom.xml
 3. Run 하여 나온 jar파일을 서버에 FTP로 전송
-4. `nohub java -jar <jar파일 명>.jar &` 명령어를 사용하여 배포
+4. `nohup java -jar <jar파일 명>.jar &` 명령어를 사용하여 배포
 
 * 서버 종료시 `ps -ef | grep '<jar 파일 명>'` 으로 pid를 찾고 `kill -9 pid` 
 

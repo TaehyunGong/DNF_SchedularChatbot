@@ -39,4 +39,5 @@
     * 기본 오늘의 등급 및 장비의 등급을 발송 할수 있도록 배포
 
 ## hotfix
--
+- 2019.11.08 : 카카오 오픈 빌더의 Request 필드가 추가되었지만 ObjectMapper 객체가 추가된 필드를 VO내에서 찾지 못하여 에러가 발생하고있었다.
+`mapper.configure(DeserializationConfig.Feature.FAIL_ON_UNKNOWN_PROPERTIES, false);` 으로 설정을 변경하여 디버깅 

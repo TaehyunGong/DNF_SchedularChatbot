@@ -6,11 +6,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.codehaus.jackson.map.DeserializationConfig;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.thkong.dnfchatbot.chatbot.Controller.RequestMappings;
 import com.thkong.dnfchatbot.chatbot.Controller.ResponseTemplate;
 import com.thkong.dnfchatbot.chatbot.dao.ChatbotDao;
 import com.thkong.dnfchatbot.chatbot.vo.Items;
@@ -20,6 +20,7 @@ import com.thkong.dnfchatbot.chatbot.vo.Equipment.ItemSetOption;
 import com.thkong.dnfchatbot.chatbot.vo.Equipment.ItemStatus;
 import com.thkong.dnfchatbot.chatbot.vo.kakaoReq.Action;
 import com.thkong.dnfchatbot.chatbot.vo.kakaoReq.DetailParam;
+import com.thkong.dnfchatbot.chatbot.vo.kakaoReq.KakaoReq;
 import com.thkong.dnfchatbot.common.httpConnection;
 
 @Service
@@ -27,6 +28,13 @@ public class ChatbotServiceImpl implements ChatbotService {
 
 	@Autowired
 	ChatbotDao dao;
+
+	ObjectMapper objmap;
+	
+	public ChatbotServiceImpl() {
+		objmap = new ObjectMapper();
+		objmap.configure(DeserializationConfig.Feature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+	}
 
 	/**
 	 * @date 2019. 9. 2.
@@ -57,8 +65,6 @@ public class ChatbotServiceImpl implements ChatbotService {
 	 */
 	@Override
 	public String toDayRating() throws IOException {
-		ObjectMapper objmap = new ObjectMapper();
-		
 		//미래를 보는 지혜 = ff3bdb021bcf73864005e78316dd961c
 		String responseMsg = connItemStatus("ff3bdb021bcf73864005e78316dd961c");
 		TodayRating eq = objmap.readValue(responseMsg, TodayRating.class);
@@ -80,8 +86,8 @@ public class ChatbotServiceImpl implements ChatbotService {
 	public String toDayEquipment(String req) throws Exception{
 		
 		//Kakao에서 받은 request json을 Action 객체로 파싱 후 setName를 가져온다. 
-		RequestMappings reqMap = RequestMappings.getInstance();
-		Action action = reqMap.getAction(req);
+		KakaoReq ob = objmap.readValue(req, KakaoReq.class);
+		Action action = ob.getAction();
 		DetailParam param = action.getDetailParams().get("equipment");
 		DetailParam option = action.getDetailParams().get("option");
 		
@@ -130,7 +136,6 @@ public class ChatbotServiceImpl implements ChatbotService {
 		}
 		Items item = new Items();
 		
-		ObjectMapper objmap = new ObjectMapper();
 		String responseMsg = connItemStatus(equip.getItemId());
 		
 		Equipment eq = objmap.readValue(responseMsg, Equipment.class);
